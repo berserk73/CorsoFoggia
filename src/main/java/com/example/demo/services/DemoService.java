@@ -39,5 +39,11 @@ public class DemoService {
 		 demoRepository.findAll().forEach(persone::add);
 		 return persone;
 	}
+	
+	public List<Persona> getPersoneByName(String name) {
+		 List<Persona> persone = new ArrayList<Persona>();
+		 demoRepository.findByNomeContainingIgnoreCase(name).forEach(persone::add);
+		 return persone;
+	}
 
 }

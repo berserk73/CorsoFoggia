@@ -46,6 +46,15 @@ public class DemoController {
 		}
 		return new ResponseEntity<>(personeList, HttpStatus.OK);
 	}
+	
+	@GetMapping("/persone-by-name/{name}")
+	public ResponseEntity<List<Persona>> getPersoneByName(@PathVariable String name) {
+		List<Persona> personeList = demoService.getPersoneByName(name);
+		if (personeList.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(personeList, HttpStatus.OK);
+	}
 
 	@PostMapping("/persona")
 	public @ResponseBody String  postPersona(
