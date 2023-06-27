@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo
+  namespace: default
+  labels:
+    project: demo
+spec:
+  selector:
+    matchLabels:
+      app: demo-pod
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: demo-pod
+        project: demo
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - greating-pod
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: demo
+        image: demo:latest
+        imagePullPolicy: Never
+        resources:
+          requests:
+            memory: '256Mi'
+          limits:
+            memory: '1Gi'
+      tolerations:
+      - key: "node.kubernetes.io/unreachable"
+        operator: "Exists"
+        effect: "NoExecute"
+        tolerationSeconds: 10
+      - key: "node.kubernetes.io/not-ready"
+        operator: "Exists"
+        effect: "NoExecute"
+        tolerationSeconds: 10
